@@ -14,12 +14,14 @@ var Event = function () {
   /**
   * store the event when subscribe
   * @type {Object}
+  * @property {Object} store
   */
   this.store = {}
 
   /**
    * store the message using the publish method
    * @type {Object}
+   * @property {Object} message
    */
   this.message = {}
 }
