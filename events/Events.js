@@ -77,8 +77,10 @@ Event.prototype.unsubscribe = function (channel, callback) {
     return this.store[channel]
   }
 
-  this.store[channel] = []
-  return this.store[channel]
+  if (this.isExistsProperty(channel)) {
+    this.store[channel] = []
+    return this.store[channel]
+  }
 }
 
 /**
