@@ -25,18 +25,77 @@ var Event = function () {
 }
 
 /**
- * Subscribe events
+ * Subscribe events, adding a array with functions registered (callback)
  * @param  {String}   channel
  * @param  {Function} callback
  * @return {Object}
  */
-Event.prototype.subscribe = function (channel, callback) {}
+Event.prototype.subscribe = function (channel, callback) {
+  var current = this.store[channel] || []
+  current.push(callback)
 
-Event.prototype.publish = function (channel, message) {}
+  this.store[channel] = current
+}
 
-Event.prototype.unsubscribe = function (channel, callback) {}
+/**
+ * Will return a boolean if the property exists in store object
+ * @param  {String}  channel
+ * @return {Boolean}
+ */
+Event.prototype.isExistsProperty = function (channel) {
+  return this.store.hasOwnProperty(channel)
+}
 
-Event.prototype.emit = function (channel) {}
+/**
+ * Publish object for the callback register in subscribe
+ * @param  {String} channel
+ * @param  {Object} message
+ * @return {Object} return the class if exists the property in this.store
+ */
+Event.prototype.publish = function (channel, message) {
+  var $exists = this.isExistsProperty(channel)
+
+  if (!$exists) {
+    throw new Error('Don\'t has the property [ ' + channel + ' ]')
+  }
+
+  this.message[channel] = message
+  return this
+}
+
+/**
+ * Subscribe a especific channel subscribed or the callback especific
+ * @param  {String}   channel
+ * @param  {Function} callback
+ * @return {Object}
+ */
+Event.prototype.unsubscribe = function (channel, callback) {
+  var $index = this.store[channel].indexOf(callback)
+
+  if ($index > -1 && callback) {
+    this.store[channel].splice($index, 1)
+    return this.store[channel]
+  }
+
+  this.store[channel] = []
+  return this.store[channel]
+}
+
+/**
+ * Execute the methods subscribed if exist in store object
+ * @param  {String} channel
+ * @return {Boolean}
+ */
+Event.prototype.emit = function (channel) {
+  var $exists = this.isExistsProperty(channel)
+
+  if ($exists) {
+    this.store[channel].forEach(fn => fn(this.message[channel]))
+    return true
+  }
+
+  return false
+}
 
 /**
  * exporting module Event

@@ -4,6 +4,8 @@
  * @description Router it's where the magic happens
  */
 
+'use strict'
+
 var Router = function () {}
 
 /**
