@@ -4,7 +4,7 @@
  * @description Router it's where the magic happens
  */
 
-
+'use strict'
 
 /**
  * Module imported
@@ -13,77 +13,73 @@
 var Event = require('../events/Events')
 var queryString = require('./queryString')
 
-
-'use strict'
-
 /**
  * @description Router will be responsable for
  * execute the definitions recive on functions
  */
-var Router = function () {
-	/**
-	 * export the functions and property
-	 * @type {Object}
-	 */
-	var scoped = {}
+var Router = (function () {
+  /**
+  * export the functions and property
+  * @type {Object}
+  */
+  var scoped = {}
 
-	/**
-	 * @description All subscribres are here
-	 * @type {Array}
-	 */
-	scoped.subscribe = []
+  /**
+  * @description All subscribres are here
+  * @type {Array}
+  */
+  scoped.subscribe = []
 
-	/**
-	 * @description Take a window location serach and parser
-	 * @type {Object}
-	 */
-	var parsedString = queryString.parse(window.location.search || '')
+  /**
+   * @description Take a window location serach and parser
+   * @type {Object}
+   */
+  var parsedString = queryString.parse(window.location.search || '')
 
-	/**
-	 * @description a helper for parameters
-	 * @type {Object}
-	 */
-	var query = {}
-	/**
-	 * Instace of Events Class
-	 * @type {Event}
-	 */
-	var socket = new Event()
+  /**
+   * @description a helper for parameters
+   * @type {Object}
+   */
+  var query = {}
+  /**
+   * Instace of Events Class
+   * @type {Event}
+   */
+  var socket = new Event()
 
-	/**
-	 * Recive atwo parameters one it is path and another a callback
-	 * @param  {String}   path
-	 * @param  {Function} callback
-	 * @return {Object}
-	 */
-	scoped.from = function (path, callback) {
-		if (!path || typeof callback !== 'function') {
-			throw new Error('Hasn\'t all parameter\'s or aren\'t correct')
-		}
+  /**
+   * Recive atwo parameters one it is path and another a callback
+   * @param  {String}   path
+   * @param  {Function} callback
+   * @return {Object}
+   */
+  scoped.from = function (path, callback) {
+    if (!path || typeof callback !== 'function') {
+      throw new Error('Hasn\'t all parameter\'s or aren\'t correct')
+    }
 
-		/**
-		 * @description call the method for subscribe a channel a function (callback)
-		 * @property {Function} subscribe
-		 */
-		socket.subscribe(path, callback)
+    /**
+     * @description call the method for subscribe a channel a function (callback)
+     * @property {Function} subscribe
+     */
+    socket.subscribe(path, callback)
 
-		/**
-		 * @description publish the search like a object
-		 */
-		query['query'] = parsedString
-		socket.publish(path, query)
+    /**
+     * @description publish the search like a object
+     */
+    query['query'] = parsedString
+    socket.publish(path, query)
 
-		/**
-		 * @description let the subscribers public
-		 */
-		scoped.subscribe.push(socket.store)
+    /**
+    * @description let the subscribers public
+    */
+    scoped.subscribe.push(socket.store)
 
-		return this
-	}
+    return this
+  }
 
-	return scoped
-}
-
+  return scoped
+})()
 
 /**
  * Verify if you are using webpack or another bundle

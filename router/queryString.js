@@ -4,15 +4,17 @@
  * @description This function will help convert query string's in object with key and value
  */
 
+'use strict'
+
 /**
  * Transform strings in arrays
  * @param  {String} separate
  * @return {Function}
  */
 function splits (separate) {
-	return function (string) {
-		return string.split(separate)
-	}
+  return function (string) {
+    return string.split(separate)
+  }
 }
 
 /**
@@ -21,25 +23,14 @@ function splits (separate) {
  * @return {Function}
  */
 function unwanted (erase) {
-	return function (string) {
-		return string.replace(erase, '')
-	}
+  return function (string) {
+    return string.replace(erase, '')
+  }
 }
 
 var split = splits('&')
 var splitValue = splits('=')
 var erase = unwanted('?')
-
-
-/**
- * erase the string unwanted
- * @param  {string} value
- * @return {String}
- */
-function erasing (value) {
-	return erase(value)
-}
-
 
 /**
  * before parse the string and transform in object I transform the string a
@@ -48,11 +39,11 @@ function erasing (value) {
  * @return {Array}
  */
 function beforeParse (value) {
-	value = split(value)
+  value = split(value)
 
-	return value.map(function (item) {
-		return splitValue(item)
-	})
+  return value.map(function (item) {
+    return splitValue(item)
+  })
 }
 
 /**
@@ -61,30 +52,29 @@ function beforeParse (value) {
  * @return {Object}
  */
 function parse (value) {
-	var object = {}
+  var object = {}
 
-	if (!value) {
-		return object
-	}
+  if (!value) {
+    return object
+  }
 
-	var arrayString = beforeParse(value)
+  var arrayString = beforeParse(value)
 
-	arrayString.reduce(function (acc, items) {
-		acc[erase(items[0])] = items[1]
+  arrayString.reduce(function (acc, items) {
+    acc[erase(items[0])] = items[1]
 
-		return acc
-	}, object)
+    return acc
+  }, object)
 
-	return object
+  return object
 }
-
 
 /**
  * exporting module with using webpack
  */
 if (module && exports) {
-	module.exports.splits = splits
-	module.exports.unwanted = unwanted
-	module.exports.beforeParse = beforeParse
-	module.exports.parse = parse
+  module.exports.splits = splits
+  module.exports.unwanted = unwanted
+  module.exports.beforeParse = beforeParse
+  module.exports.parse = parse
 }

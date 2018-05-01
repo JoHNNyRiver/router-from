@@ -92,9 +92,13 @@ Event.prototype.unsubscribe = function (channel, callback) {
  */
 Event.prototype.emit = function (channel) {
   var $exists = this.isExistsProperty(channel)
+  var context = this
 
   if ($exists) {
-    this.store[channel].forEach(fn => fn(this.message[channel]))
+    this.store[channel].forEach(function (fn) {
+      fn(context.message[channel])
+    })
+
     return true
   }
 
