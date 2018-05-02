@@ -4,6 +4,8 @@
  * @description This function it's a help for path recived in router.js
  */
 
+'use strict'
+
 var regex = /:\w+/gmi
 
 /**
