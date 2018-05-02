@@ -37,11 +37,6 @@ var Router = (function () {
   var parsedString = queryString.parse(window.location.search || '')
 
   /**
-   * @description a helper for parameters
-   * @type {Object}
-   */
-  var query = {}
-  /**
    * Instace of Events Class
    * @type {Event}
    */
@@ -67,8 +62,7 @@ var Router = (function () {
     /**
      * @description publish the search like a object
      */
-    query['query'] = parsedString
-    socket.publish(path, query)
+    socket.publish(path, {query: parsedString})
 
     /**
     * @description let the subscribers public
