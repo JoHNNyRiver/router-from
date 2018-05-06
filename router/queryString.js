@@ -58,7 +58,8 @@ function parse (value) {
     return object
   }
 
-  var arrayString = beforeParse(value)
+  var valueTrate = decodeURIComponent(value)
+  var arrayString = beforeParse(valueTrate)
 
   arrayString.reduce(function (acc, items) {
     acc[erase(items[0])] = items[1]
