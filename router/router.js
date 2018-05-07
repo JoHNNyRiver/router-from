@@ -68,9 +68,8 @@ var Router = (function () {
     if (index >= storeMiddleWare.length) return
 
     if (typeof storeMiddleWare[index] === 'object') {
-      if (storePath[index] === window.location.pathname) {
-        storeMiddleWare[index][storePath[index]](parameter)
-        return execMiddleware(index + 1)
+      if (storeMiddleWare[index].hasOwnProperty(window.location.pathname)) {
+        storeMiddleWare[index][window.location.pathname](parameter)
       }
 
       return execMiddleware(index + 1)
@@ -130,11 +129,12 @@ var Router = (function () {
     if (!path || typeof callback !== 'function') {
       throw new Error('Hasn\'t all parameter\'s or aren\'t correct')
     }
-
     /**
      * store the path in path array
      */
-    storePath.push(path)
+    if (storePath.indexOf(path) < 0) {
+      storePath.push(path)
+    }
 
     /**
      * @description call the method for subscribe a channel a function (callback)
