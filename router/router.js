@@ -161,7 +161,7 @@ var Router = (function () {
     /**
      * Verify if the path it's the same defined
      * @param  {Boolean} isEqualForBoth(path, window.location.pathname) [description]
-     * @return {[type]}                       [description]
+     * @return {Void}
      */
     if (isEqualForBoth(path, window.location.pathname)) {
       execMiddleware(0, {query: parsedString, param: params})
